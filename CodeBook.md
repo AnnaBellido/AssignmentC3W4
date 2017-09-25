@@ -1,6 +1,6 @@
 # Code book
 
-This code book describes the variables in the *final_summary.csv* file, in addition to the procedure followed to obtain such data.
+This code book describes the variables in the *final_summary.csv* file, in addition to the procedure followed to obtain such data. This data set was calculated from a list of data sets storing the results of an experiment, where participants had a Samsung Galaxy S at the height of their hips, and the data from the accelerometer was continuously stored (rate of 50Hz) as they did an activity (from a list of possible options). 
 
 ## Variables
 
@@ -82,3 +82,14 @@ The list of those variables is:
 
 ## Procedure
 
+The first step was gathering all the data of the training set and the test set of data. Participants were randomly assigned either one or the other, but posterior analysis needs the two data sets to be joined together. I used the function _rbind_ to obtain the final data set. 
+
+
+I loaded the file with the stored feature names in the training and the test files, and used those names as variable names for the data set previously obtained. 
+
+
+These variables names allowed to subset only those variables on the mean and the standard deviation, which are the variables we are interested in. 
+
+
+The final goal is to obtain the mean of each of those variables grouping by subject and the activity the subject was doing. For this, we need to add the information related to those activities and subjects. I loaded the files with the activity codes of each recording in the data set (training and test), I merged the data with **rbind**, and I merged it with the table that stored the corresponding activity name using the function **left_join**. Finally, I included the new column with the activity names in the data set with the recordings with the function **cbind**. Regarding the subjects id, I loaded the file with those ids per recording and attached it to the previous data set also with the function **cbind**. 
+The last step was running the summary function over the data set obtained grouped by the subject id and the activity name. Since we want to get the mean value of all the variables, I used the function **summary_if** and I indicated as condition that the variable had to be numeric (*is.numeric*). Then, what I did was using the function **group_by** to be able to group by subject id and activity name, and passed the result to the **summary_if**, which returned the desired result.
